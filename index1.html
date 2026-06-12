@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommunicateEase</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+</head>
+<body>
+
+    <div id="login-screen">
+        <h1>CommunicateEase</h1>
+        <input type="text" id="username" placeholder="Enter your name...">
+        <button onclick="login()">Enter Dashboard</button>
+    </div>
+
+    <div id="dashboard" style="display: none;">
+        <h2 id="greeting"></h2>
+
+        <div class="card emergency-card">
+            <h3>🚨 Emergency Actions</h3>
+            <button onclick="processInput('HELP')">I need help</button>
+            <button onclick="processInput('POLICE')">Call the police</button>
+            <button onclick="processInput('SICK')">Not feeling well</button>
+        </div>
+
+        <div class="card">
+            <h3>Sign Language Output</h3>
+            <div id="display-container">
+                <img id="sign-display" src="assets/idle.jpeg" alt="Sign Display">
+            </div>
+            <p id="current-translation" style="font-weight: bold; margin-top: 10px;">Ready...</p>
+            
+            <div style="margin-top: 15px;">
+                <input type="text" id="text-input" placeholder="Type a message...">
+                <button onclick="manualTextSubmit()">Translate Text</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Voice Translator</h3>
+            <button onclick="startListening()">🎤 Start Listening</button>
+            <p id="voice-output" style="margin-top: 10px; color: #555;">...</p>
+        </div>
+
+        <div class="card learning-card">
+            <h3>📚 Practice Mode</h3>
+            <button onclick="startLearningMode()">Start Practice</button>
+            <h4 id="learning-prompt" style="color: #0056b3; margin-top: 15px;"></h4>
+            <p id="learning-feedback" style="font-weight: bold; color: green;"></p>
+        </div>
+
+        <div class="card">
+            <h3>Sign to Speech (Webcam AI)</h3>
+            
+            <div style="margin-bottom: 15px; padding: 10px; background: #ecf0f1; border-radius: 8px;">
+                <label for="dataset-upload"><b>1. Upload 'dataset' folder (Max 20 images per letter):</b></label><br>
+                <input type="file" id="dataset-upload" webkitdirectory directory multiple style="margin-top: 5px;">
+            </div>
+
+            <button type="button" onclick="initWebcam()">2. Turn On Camera</button>
+            <button type="button" onclick="stopWebcam()" style="background-color: #e74c3c;">Turn Off Camera</button>
+            
+            <div id="webcam-container" style="margin-top: 15px;">
+                <video id="input-video" width="100%" autoplay playsinline style="border: 2px solid #2c3e50; border-radius: 8px;"></video>
+            </div>
+            <p id="gesture-output" style="margin-top: 10px; font-weight: bold; color: #e74c3c;">Camera Off</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
