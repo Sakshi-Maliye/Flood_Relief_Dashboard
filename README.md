@@ -20,7 +20,7 @@
 * Maven installed
 * Docker Desktop (with Kubernetes enabled)
 * `kubectl` CLI tool configured
-### 1. Build the Application
+Build the Application
 Clone the repository and package the Spring Boot application:
 ```bash
 ./mvnw clean package -DskipTests
