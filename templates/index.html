@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bengaluru Flood Relief Dashboard</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark"></span>
+    <div>
+      <h1>Flood Relief Dashboard</h1>
+      <p class="subtitle">Ward-level risk · Bengaluru</p>
+    </div>
+  </div>
+  <div class="topbar-controls">
+    <label class="toggle">
+      <input type="checkbox" id="live-rain-toggle" checked />
+      <span>Live rainfall</span>
+    </label>
+    <div class="search-wrap">
+      <input id="ward-search" list="ward-list" placeholder="Search a ward…" autocomplete="off" />
+      <datalist id="ward-list"></datalist>
+    </div>
+  </div>
+</header>
+
+<main class="layout">
+  <div id="map"></div>
+
+  <aside id="panel" class="panel panel-empty">
+    <div class="panel-empty-state">
+      <p class="eyebrow">No ward selected</p>
+      <h2>Click a ward on the map</h2>
+      <p class="muted">Or search by name above. Each ward's terrain, drainage, and census profile feeds a local Random Forest model, then a live rainfall reading and an LLM produce a plain-language advisory.</p>
+      <div class="legend">
+        <div class="legend-row"><span class="dot dot-low"></span> Low</div>
+        <div class="legend-row"><span class="dot dot-medium"></span> Medium</div>
+        <div class="legend-row"><span class="dot dot-high"></span> High</div>
+      </div>
+    </div>
+
+    <div class="panel-loaded" hidden>
+      <p class="eyebrow" id="ward-eyebrow">WARD</p>
+      <h2 id="ward-name">—</h2>
+
+      <div class="state-banner" id="evac-banner">
+        <span class="state-dot"></span>
+        <span id="evac-label">—</span>
+      </div>
+
+      <div class="readout-grid">
+        <div class="readout">
+          <span class="readout-label">Risk class</span>
+          <span class="readout-value" id="risk-value">—</span>
+        </div>
+        <div class="readout">
+          <span class="readout-label">Live rainfall</span>
+          <span class="readout-value" id="rain-value">—</span>
+        </div>
+        <div class="readout">
+          <span class="readout-label">Drainage density</span>
+          <span class="readout-value" id="drain-value">—</span>
+        </div>
+        <div class="readout">
+          <span class="readout-label">Population density</span>
+          <span class="readout-value" id="pop-value">—</span>
+        </div>
+        <div class="readout">
+          <span class="readout-label">Mean elevation</span>
+          <span class="readout-value" id="elev-value">—</span>
+        </div>
+        <div class="readout">
+          <span class="readout-label">Vulnerable pop. ratio</span>
+          <span class="readout-value" id="vuln-value">—</span>
+        </div>
+      </div>
+
+      <div class="probability-bars" id="prob-bars"></div>
+
+      <div class="advisory-block">
+        <p class="eyebrow">Advisory <span id="advisory-source" class="advisory-source"></span></p>
+        <p id="advisory-text" class="advisory-text">—</p>
+      </div>
+    </div>
+
+    <div class="panel-loading" hidden>
+      <div class="spinner"></div>
+      <p>Reading terrain &amp; drainage profile, fetching live rainfall, generating advisory…</p>
+    </div>
+  </aside>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
